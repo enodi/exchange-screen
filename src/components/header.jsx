@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import logo from "images/bar.svg";
 
-export const Header = () => (
+const Header = () => (
   <header className="header">
     <div className="content-container">
       <div className="header__content">

@@ -1,0 +1,93 @@
+form {
+  padding: $m-size;
+}
+
+.text {
+  font-size: 2.5rem;
+  padding: 0 $m-size;
+}
+
+.top-section,
+.middle-section,
+.bottom-section {
+  display: flex;
+  justify-content: space-between;
+  height: 150px;
+  margin-top: $s-size;
+  span {
+    display: block;
+    font-size: $font-size-small;
+    color: rgb(150, 150, 150);
+  }
+
+  > div,
+  > input {
+    height: 30%;
+  }
+
+  .pocket,
+  input {
+    width: 100px;
+    height: 40px;
+    outline: none;
+  }
+
+  .pocket {
+    font-size: 2rem;
+  }
+
+  input {
+    border: none;
+    text-align: end;
+    font-size: 2.5rem;
+    background-color: transparent;
+  }
+}
+
+.middle-section {
+  .exchange-rate {
+    height: 50px;
+    width: 150px;
+    border-radius: 30px;
+    border: 2px solid $dark-blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      font-size: 2rem;
+      color: $dark-blue;
+    }
+  }
+}
+
+#exchange-button {
+  height: 60px;
+  width: 60px;
+  border: none;
+  background: $dark-blue;
+  border-radius: 50px;
+  cursor: pointer;
+  &:focus {
+    outline: 2px dashed #17171d;
+  }
+  &:hover {
+    svg {
+      transform: scale(1.1);
+    }
+  }
+  &::-moz-focus-inner {
+    border: 0;
+  }
+  svg {
+    outline: none;
+    transition: transform 0.15s linear;
+  }
+}
+
+.sr-only {
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
