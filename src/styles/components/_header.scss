@@ -1,34 +1,36 @@
 .header {
-  background: @dark-blue;
+  background: $dark-blue;
   width: 100%;
-  margin-bottom: @xl-size;
+  margin-bottom: $xl-size;
 }
 
 .header__content {
   align-items: center;
   display: flex;
-  padding: @s-size 0 !important;
+  padding: $s-size $m-size;
 }
 
 .header__title {
   text-decoration: none;
 
   h1 {
-    margin-right: @s-size;
-    color: @text-color-secondary;
+    margin-right: $s-size;
+    color: #fff;
     display: inline;
+    font-weight: 400;
   }
 }
 
 .content-container {
   margin: 0 auto;
   width: 100%;
-  padding: 0 @m-size;
+  padding: 0 $m-size;
 }
 
 .logo {
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   position: absolute;
   top: 1rem;
+  margin-left: $s-size;
 }
