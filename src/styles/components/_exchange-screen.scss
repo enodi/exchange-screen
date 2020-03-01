@@ -8,7 +8,6 @@ form {
 }
 
 .top-section,
-.middle-section,
 .bottom-section {
   display: flex;
   justify-content: space-between;
@@ -45,18 +44,30 @@ form {
 }
 
 .middle-section {
-  .exchange-rate {
-    height: 50px;
-    width: 150px;
-    border-radius: 30px;
-    border: 2px solid $dark-blue;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  height: 150px;
 
-    span {
-      font-size: 2rem;
-      color: $dark-blue;
+  .inner-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: $s-size;
+
+    .exchange-rate {
+      height: 50px;
+      width: 150px;
+      border-radius: 30px;
+      border: 2px solid #fff;
+      background-color: #fff;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
+        0 2px 10px 0 rgba(0, 0, 0, 0.12);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      span {
+        font-size: 2rem;
+        color: $dark-blue;
+      }
     }
   }
 }
@@ -66,6 +77,7 @@ form {
   width: 60px;
   border: none;
   background: $dark-blue;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   border-radius: 50px;
   cursor: pointer;
   &:focus {
