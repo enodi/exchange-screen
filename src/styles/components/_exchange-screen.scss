@@ -33,6 +33,7 @@ form {
 
   .pocket {
     font-size: 2rem;
+    cursor: pointer;
   }
 
   input {
@@ -65,7 +66,7 @@ form {
       align-items: center;
 
       span {
-        font-size: 2rem;
+        font-size: 1.8rem;
         color: $dark-blue;
       }
     }
