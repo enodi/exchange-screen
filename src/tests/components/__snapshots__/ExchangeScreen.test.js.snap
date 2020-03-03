@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExchangeScreen Component should render ExchangeScreen component correctly 1`] = `
+<Fragment>
+  <Card>
+    <h1
+      className="text"
+    >
+      Exchange Screen
+    </h1>
+    <form
+      onSubmit={[Function]}
+    >
+      <div
+        className="top-section"
+      >
+        <div>
+          <select
+            className="pocket"
+            onChange={[Function]}
+            value="GBP"
+          >
+            <option
+              key="pocket-currency-0"
+              value="GBP"
+            >
+              GBP
+            </option>
+            <option
+              key="pocket-currency-1"
+              value="USD"
+            >
+              USD
+            </option>
+            <option
+              key="pocket-currency-2"
+              value="JPY"
+            >
+              JPY
+            </option>
+          </select>
+          <span
+            className="balance "
+          >
+            Balance: £1000
+          </span>
+        </div>
+        <input
+          onChange={[Function]}
+          placeholder="0.00"
+          required={true}
+          type="number"
+          value=""
+        />
+      </div>
+      <div
+        className="middle-section"
+      >
+        <div
+          className="inner-section"
+        >
+          <ExchangeButton />
+          <div
+            className="exchange-rate"
+          >
+            <span>
+              £1
+               
+              =
+               
+              €1.1493
+            </span>
+          </div>
+          <NavLink
+            to="/target"
+          >
+            <Button
+              color="blue"
+              size="medium"
+              text="Set target"
+            />
+          </NavLink>
+        </div>
+      </div>
+      <div
+        className="bottom-section"
+      >
+        <div>
+          <select
+            className="pocket"
+            onChange={[Function]}
+            value="EUR"
+          >
+            <option
+              key="pocket-currency-0"
+              value="EUR"
+            >
+              EUR
+            </option>
+            <option
+              key="pocket-currency-1"
+              value="USD"
+            >
+              USD
+            </option>
+            <option
+              key="pocket-currency-2"
+              value="JPY"
+            >
+              JPY
+            </option>
+          </select>
+          <span
+            className="balance "
+          >
+            Balance: €700
+          </span>
+        </div>
+        <input
+          onChange={[Function]}
+          placeholder="0.00"
+          required={true}
+          type="number"
+          value=""
+        />
+      </div>
+      <Button
+        color="pink"
+        disabled={true}
+        size="large"
+        text="Exchange"
+      />
+    </form>
+  </Card>
+</Fragment>
+`;

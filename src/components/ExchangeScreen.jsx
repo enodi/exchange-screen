@@ -6,8 +6,9 @@ import Card from "./Card";
 import Button from "./Button";
 import ExchangeButton from "./ExchangeButton";
 import { fetchExchangeRate } from "actions/exchange-rate";
+import rateConverter from "helpers/converter";
 
-class ExchangeScreen extends React.Component {
+export class ExchangeScreen extends React.Component {
   state = {
     disabled: true,
     exchange: false,
@@ -122,8 +123,8 @@ class ExchangeScreen extends React.Component {
 
       targetPocket.amount =
         sourcePocket.value === "EUR"
-          ? this.rateConverter(value / source, 100)
-          : this.rateConverter(value * target, 100);
+          ? rateConverter(value / source, 100)
+          : rateConverter(value * target, 100);
 
       if (targetPocket.amount > sourcePocketBalance.slice(1)) {
         this.setState(() => ({ disabled: true }));
@@ -158,8 +159,8 @@ class ExchangeScreen extends React.Component {
       this.setState(() => ({ exchange: false }));
       sourcePocket.amount =
         sourcePocket.value === "EUR"
-          ? this.rateConverter(value * source, 100)
-          : this.rateConverter(value / target, 100);
+          ? rateConverter(value * source, 100)
+          : rateConverter(value / target, 100);
 
       if (sourcePocket.amount > targetPocketBalance.slice(1)) {
         this.setState(() => ({ disabled: true }));
@@ -241,14 +242,10 @@ class ExchangeScreen extends React.Component {
 
   retrievePocketBalance = (pocket, value) => {
     const itemsInPocket = pocket.filter(item => item.currency === value);
-    return `${itemsInPocket[0].symbol}${this.rateConverter(
+    return `${itemsInPocket[0].symbol}${rateConverter(
       itemsInPocket[0].balance,
       100
     )}`;
-  };
-
-  rateConverter = (amount, converter) => {
-    return Math.round(amount * converter) / converter;
   };
 
   render() {
@@ -319,14 +316,14 @@ class ExchangeScreen extends React.Component {
                       ? `${this.retrievePocketSymbol(
                           sourcePocket,
                           sourceValue
-                        )}${this.rateConverter(source, 10000)}`
+                        )}${rateConverter(source, 10000)}`
                       : "0"}{" "}
                     ={" "}
                     {target
                       ? `${this.retrievePocketSymbol(
                           targetPocket,
                           targetValue
-                        )}${this.rateConverter(target, 10000)}`
+                        )}${rateConverter(target, 10000)}`
                       : "0"}
                   </span>
                 </div>

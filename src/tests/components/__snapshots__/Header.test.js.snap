@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header Component should render Header component correctly 1`] = `
+<header
+  className="header"
+>
+  <div
+    className="content-container"
+  >
+    <div
+      className="header__content"
+    >
+      <NavLink
+        className="header__title"
+        to="/"
+      >
+        <h1>
+          Revolut
+        </h1>
+        <img
+          alt="logo"
+          className="logo"
+          src="bar.svg"
+        />
+      </NavLink>
+    </div>
+  </div>
+</header>
+`;
