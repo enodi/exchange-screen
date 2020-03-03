@@ -9,9 +9,12 @@ import { fetchExchangeRate } from "actions/exchange-rate";
 
 class ExchangeScreen extends React.Component {
   state = {
+    disabled: true,
+    exchange: false,
     source: {
       value: "GBP",
-      pockets: [
+      amount: "",
+      pocket: [
         {
           currency: "GBP",
           symbol: "£",
@@ -30,13 +33,14 @@ class ExchangeScreen extends React.Component {
         {
           currency: "JPY",
           symbol: "¥",
-          balance: 200
+          balance: 1200
         }
       ]
     },
     target: {
       value: "EUR",
-      pockets: [
+      amount: "",
+      pocket: [
         {
           currency: "GBP",
           symbol: "£",
@@ -55,7 +59,7 @@ class ExchangeScreen extends React.Component {
         {
           currency: "JPY",
           symbol: "¥",
-          balance: 200
+          balance: 1200
         }
       ]
     }
@@ -82,16 +86,115 @@ class ExchangeScreen extends React.Component {
     }
   }
 
-  handleSourceChange = event => {
+  sourcePocketChange = event => {
     const source = { ...this.state.source };
     source.value = event.target.value;
     this.setState({ source });
   };
 
-  handleTargetChange = event => {
+  targetPocketChange = event => {
     const target = { ...this.state.target };
     target.value = event.target.value;
     this.setState({ target });
+  };
+
+  sourceInputChange = event => {
+    const { target, source } = this.props.exchangeRate;
+    const { value } = event.target;
+    const sourcePocket = { ...this.state.source };
+    const targetPocket = { ...this.state.target };
+
+    sourcePocket.amount = value;
+    if (value.length > 0) {
+      this.setState(() => ({ disabled: false }));
+      this.setState(() => ({ exchange: true }));
+      console.log(sourcePocket.value, "hahah");
+      targetPocket.amount =
+        sourcePocket.value === "EUR"
+          ? this.rateConverter(value * source, 100)
+          : this.rateConverter(value * target, 100);
+    } else {
+      this.setState(() => ({ disabled: true }));
+      targetPocket.amount = "";
+    }
+
+    this.setState({ source: sourcePocket });
+    this.setState({ target: targetPocket });
+  };
+
+  targetInputChange = event => {
+    const { target, source } = this.props.exchangeRate;
+    const { value } = event.target;
+    const sourcePocket = { ...this.state.source };
+    const targetPocket = { ...this.state.target };
+
+    targetPocket.amount = value;
+    if (value.length > 0) {
+      this.setState(() => ({ disabled: false }));
+      this.setState(() => ({ exchange: false }));
+      sourcePocket.amount =
+        sourcePocket.value === "EUR"
+          ? this.rateConverter(value / source, 100)
+          : this.rateConverter(value / target, 100);
+    } else {
+      this.setState(() => ({ disabled: true }));
+      sourcePocket.amount = "";
+    }
+    this.setState({ target: targetPocket });
+    this.setState({ source: sourcePocket });
+  };
+
+  handleExchange = event => {
+    event.preventDefault();
+    const { exchange } = this.state;
+    const sourcePocket = { ...this.state.source };
+    const targetPocket = { ...this.state.target };
+    let sourceArr = [];
+    let targetArr = [];
+
+    if (exchange) {
+      sourcePocket.pocket.map(item => {
+        if (item.currency === sourcePocket.value) {
+          item.balance = item.balance - sourcePocket.amount;
+        }
+        sourceArr.push(item);
+        sourcePocket.pocket = sourceArr;
+      });
+      targetPocket.pocket.map(item => {
+        if (item.currency === targetPocket.value) {
+          item.balance = item.balance + targetPocket.amount;
+        }
+        targetArr.push(item);
+        targetPocket.pocket = targetArr;
+      });
+
+      sourcePocket.amount = "";
+      targetPocket.amount = "";
+      this.setState({ source: sourcePocket });
+      this.setState({ target: targetPocket });
+      this.setState(() => ({ disabled: true }));
+    } else {
+      sourcePocket.pocket.map(item => {
+        if (item.currency === sourcePocket.value) {
+          item.balance = item.balance + sourcePocket.amount;
+        }
+        sourceArr.push(item);
+        sourcePocket.pocket = sourceArr;
+      });
+      targetPocket.pocket.map(item => {
+        if (item.currency === targetPocket.value) {
+          item.balance = item.balance - targetPocket.amount;
+        }
+        targetArr.push(item);
+        targetPocket.pocket = targetArr;
+      });
+
+      sourcePocket.amount = "";
+      targetPocket.amount = "";
+      this.setState({ source: sourcePocket });
+      this.setState({ target: targetPocket });
+      this.setState(() => ({ disabled: true }));
+    }
   };
 
   retrievePocketSymbol = (pocket, value) => {
@@ -105,28 +208,43 @@ class ExchangeScreen extends React.Component {
 
   retrievePocketBalance = (pocket, value) => {
     const itemsInPocket = pocket.filter(item => item.currency === value);
-    return `${itemsInPocket[0].symbol}${itemsInPocket[0].balance.toFixed(2)}`;
+    return `${itemsInPocket[0].symbol}${this.rateConverter(
+      itemsInPocket[0].balance,
+      100
+    )}`;
+  };
+
+  rateConverter = (amount, converter) => {
+    return Math.round(amount * converter) / converter;
   };
 
   render() {
     const { source, target } = this.props.exchangeRate;
-    const CONVERTER = 1000;
     const {
-      source: { value: sourceValue, pockets: sourcePocket },
-      target: { value: targetValue, pockets: targetPocket }
+      source: {
+        value: sourceValue,
+        pocket: sourcePocket,
+        amount: sourceAmount
+      },
+      target: {
+        value: targetValue,
+        pocket: targetPocket,
+        amount: targetAmount
+      },
+      disabled
     } = this.state;
 
     return (
       <>
         <Card>
           <h1 className="text">Exchange Screen</h1>
-          <form>
+          <form onSubmit={this.handleExchange}>
             <div className="top-section">
               <div>
                 <select
                   className="pocket"
                   value={sourceValue}
-                  onChange={this.handleSourceChange}
+                  onChange={this.sourcePocketChange}
                 >
                   {sourcePocket &&
                     this.retrievePocketCurrency(sourcePocket)
@@ -147,7 +265,13 @@ class ExchangeScreen extends React.Component {
                   sourceValue
                 )}`}</span>
               </div>
-              <input type="number" placeholder="0.00" required />
+              <input
+                type="number"
+                placeholder="0.00"
+                required
+                onChange={this.sourceInputChange}
+                value={sourceAmount}
+              />
             </div>
             <div className="middle-section">
               <div className="inner-section">
@@ -158,15 +282,15 @@ class ExchangeScreen extends React.Component {
                       ? `${this.retrievePocketSymbol(
                           sourcePocket,
                           sourceValue
-                        )}${Math.round(source * CONVERTER) / CONVERTER}`
-                      : 0}{" "}
+                        )}${this.rateConverter(source, 10000)}`
+                      : "0"}{" "}
                     ={" "}
                     {target
                       ? `${this.retrievePocketSymbol(
                           targetPocket,
                           targetValue
-                        )}${Math.round(target * CONVERTER) / CONVERTER}`
-                      : 0}
+                        )}${this.rateConverter(target, 10000)}`
+                      : "0"}
                   </span>
                 </div>
                 <NavLink to="/target">
@@ -179,7 +303,7 @@ class ExchangeScreen extends React.Component {
                 <select
                   className="pocket"
                   value={targetValue}
-                  onChange={this.handleTargetChange}
+                  onChange={this.targetPocketChange}
                 >
                   {targetPocket &&
                     this.retrievePocketCurrency(targetPocket)
@@ -200,9 +324,20 @@ class ExchangeScreen extends React.Component {
                   targetValue
                 )}`}</span>
               </div>
-              <input type="number" placeholder="0.00" required />
+              <input
+                type="number"
+                placeholder="0.00"
+                required
+                onChange={this.targetInputChange}
+                value={targetAmount}
+              />
             </div>
-            <Button text="Exchange" color="pink" size="large" />
+            <Button
+              text="Exchange"
+              color="pink"
+              size="large"
+              disabled={disabled}
+            />
           </form>
         </Card>
       </>
