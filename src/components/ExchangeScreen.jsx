@@ -14,6 +14,7 @@ class ExchangeScreen extends React.Component {
     source: {
       value: "GBP",
       amount: "",
+      error: false,
       pocket: [
         {
           currency: "GBP",
@@ -40,6 +41,7 @@ class ExchangeScreen extends React.Component {
     target: {
       value: "EUR",
       amount: "",
+      error: false,
       pocket: [
         {
           currency: "GBP",
@@ -80,6 +82,11 @@ class ExchangeScreen extends React.Component {
     this.getExchangeRates();
   }
 
+  rateCheckInterval = setInterval(() => {
+    this.getExchangeRates();
+    clearInterval(this.rateCheckInterval);
+  }, 10 * 1000);
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState !== this.state) {
       this.getExchangeRates();
@@ -103,16 +110,29 @@ class ExchangeScreen extends React.Component {
     const { value } = event.target;
     const sourcePocket = { ...this.state.source };
     const targetPocket = { ...this.state.target };
+    const sourcePocketBalance = this.retrievePocketBalance(
+      sourcePocket.pocket,
+      sourcePocket.value
+    );
 
     sourcePocket.amount = value;
     if (value.length > 0) {
       this.setState(() => ({ disabled: false }));
       this.setState(() => ({ exchange: true }));
-      console.log(sourcePocket.value, "hahah");
+
       targetPocket.amount =
         sourcePocket.value === "EUR"
-          ? this.rateConverter(value * source, 100)
+          ? this.rateConverter(value / source, 100)
           : this.rateConverter(value * target, 100);
+
+      if (targetPocket.amount > sourcePocketBalance.slice(1)) {
+        this.setState(() => ({ disabled: true }));
+        sourcePocket.error = true;
+        this.setState({ source: sourcePocket });
+      } else {
+        sourcePocket.error = false;
+        this.setState({ source: sourcePocket });
+      }
     } else {
       this.setState(() => ({ disabled: true }));
       targetPocket.amount = "";
@@ -127,6 +147,10 @@ class ExchangeScreen extends React.Component {
     const { value } = event.target;
     const sourcePocket = { ...this.state.source };
     const targetPocket = { ...this.state.target };
+    const targetPocketBalance = this.retrievePocketBalance(
+      targetPocket.pocket,
+      targetPocket.value
+    );
 
     targetPocket.amount = value;
     if (value.length > 0) {
@@ -134,8 +158,17 @@ class ExchangeScreen extends React.Component {
       this.setState(() => ({ exchange: false }));
       sourcePocket.amount =
         sourcePocket.value === "EUR"
-          ? this.rateConverter(value / source, 100)
+          ? this.rateConverter(value * source, 100)
           : this.rateConverter(value / target, 100);
+
+      if (sourcePocket.amount > targetPocketBalance.slice(1)) {
+        this.setState(() => ({ disabled: true }));
+        targetPocket.error = true;
+        this.setState({ target: targetPocket });
+      } else {
+        targetPocket.error = false;
+        this.setState({ target: targetPocket });
+      }
     } else {
       this.setState(() => ({ disabled: true }));
       sourcePocket.amount = "";
@@ -224,12 +257,14 @@ class ExchangeScreen extends React.Component {
       source: {
         value: sourceValue,
         pocket: sourcePocket,
-        amount: sourceAmount
+        amount: sourceAmount,
+        error: sourceError
       },
       target: {
         value: targetValue,
         pocket: targetPocket,
-        amount: targetAmount
+        amount: targetAmount,
+        error: targetError
       },
       disabled
     } = this.state;
@@ -260,7 +295,9 @@ class ExchangeScreen extends React.Component {
                         );
                       })}
                 </select>
-                <span>{`Balance: ${this.retrievePocketBalance(
+                <span
+                  className={`balance ${sourceError ? "error" : ""}`}
+                >{`Balance: ${this.retrievePocketBalance(
                   sourcePocket,
                   sourceValue
                 )}`}</span>
@@ -319,7 +356,9 @@ class ExchangeScreen extends React.Component {
                         );
                       })}
                 </select>
-                <span>{`Balance: ${this.retrievePocketBalance(
+                <span
+                  className={`balance ${targetError ? "error" : ""}`}
+                >{`Balance: ${this.retrievePocketBalance(
                   targetPocket,
                   targetValue
                 )}`}</span>
