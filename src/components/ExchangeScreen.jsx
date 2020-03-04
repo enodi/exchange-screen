@@ -11,7 +11,7 @@ export class ExchangeScreen extends React.Component {
   state = {
     disabled: true,
     exchange: false,
-
+    swap: false,
     source: {
       value: "GBP",
       amount: "",
@@ -248,6 +248,11 @@ export class ExchangeScreen extends React.Component {
     )}`;
   };
 
+  swapPocketCurrencies = event => {
+    event.preventDefault();
+    this.setState(() => ({ swap: !this.state.swap }));
+  };
+
   render() {
     const { source, target } = this.props.exchangeRate;
     const {
@@ -263,7 +268,8 @@ export class ExchangeScreen extends React.Component {
         amount: targetAmount,
         error: targetError
       },
-      disabled
+      disabled,
+      swap
     } = this.state;
 
     return (
@@ -275,40 +281,65 @@ export class ExchangeScreen extends React.Component {
               <div>
                 <select
                   className="pocket"
-                  value={sourceValue}
+                  value={!swap ? sourceValue : targetValue}
                   onChange={this.sourcePocketChange}
                 >
-                  {sourcePocket &&
-                    this.retrievePocketCurrency(sourcePocket)
-                      .filter(currency => currency !== targetValue)
-                      .map((currency, index) => {
-                        return (
-                          <option
-                            value={currency}
-                            key={`pocket-currency-${index}`}
-                          >
-                            {currency}
-                          </option>
-                        );
-                      })}
+                  {!swap
+                    ? this.retrievePocketCurrency(sourcePocket)
+                        .filter(currency => currency !== targetValue)
+                        .map((currency, index) => {
+                          return (
+                            <option
+                              value={currency}
+                              key={`pocket-currency-${index}`}
+                            >
+                              {currency}
+                            </option>
+                          );
+                        })
+                    : this.retrievePocketCurrency(targetPocket)
+                        .filter(currency => currency !== sourceValue)
+                        .map((currency, index) => {
+                          return (
+                            <option
+                              value={currency}
+                              key={`pocket-currency-${index}`}
+                            >
+                              {currency}
+                            </option>
+                          );
+                        })}
                 </select>
-                <span
-                  className={`balance ${sourceError ? "error" : ""}`}
-                >{`Balance: ${this.retrievePocketBalance(
-                  sourcePocket,
-                  sourceValue
-                )}`}</span>
+                {!swap ? (
+                  <span
+                    className={`balance ${sourceError ? "error" : ""}`}
+                  >{`Balance: ${this.retrievePocketBalance(
+                    sourcePocket,
+                    sourceValue
+                  )}`}</span>
+                ) : (
+                  <span
+                    className={`balance ${targetError ? "error" : ""}`}
+                  >{`Balance: ${this.retrievePocketBalance(
+                    targetPocket,
+                    targetValue
+                  )}`}</span>
+                )}
               </div>
               <input
                 type="number"
                 placeholder="0.00"
-                onChange={this.sourceInputChange}
-                value={sourceAmount}
+                onChange={
+                  !swap ? this.sourceInputChange : this.targetInputChange
+                }
+                value={!swap ? sourceAmount : targetAmount}
               />
             </div>
             <div className="middle-section">
               <div className="inner-section">
-                <ExchangeButton />
+                <ExchangeButton
+                  swapPocketCurrencies={this.swapPocketCurrencies}
+                />
                 <div className="exchange-rate">
                   <span>
                     {source
@@ -332,35 +363,58 @@ export class ExchangeScreen extends React.Component {
               <div>
                 <select
                   className="pocket"
-                  value={targetValue}
+                  value={!swap ? targetValue : sourceValue}
                   onChange={this.targetPocketChange}
                 >
-                  {targetPocket &&
-                    this.retrievePocketCurrency(targetPocket)
-                      .filter(currency => currency !== sourceValue)
-                      .map((currency, index) => {
-                        return (
-                          <option
-                            value={currency}
-                            key={`pocket-currency-${index}`}
-                          >
-                            {currency}
-                          </option>
-                        );
-                      })}
+                  {!swap
+                    ? this.retrievePocketCurrency(targetPocket)
+                        .filter(currency => currency !== sourceValue)
+                        .map((currency, index) => {
+                          return (
+                            <option
+                              value={currency}
+                              key={`pocket-currency-${index}`}
+                            >
+                              {currency}
+                            </option>
+                          );
+                        })
+                    : this.retrievePocketCurrency(sourcePocket)
+                        .filter(currency => currency !== targetValue)
+                        .map((currency, index) => {
+                          return (
+                            <option
+                              value={currency}
+                              key={`pocket-currency-${index}`}
+                            >
+                              {currency}
+                            </option>
+                          );
+                        })}
                 </select>
-                <span
-                  className={`balance ${targetError ? "error" : ""}`}
-                >{`Balance: ${this.retrievePocketBalance(
-                  targetPocket,
-                  targetValue
-                )}`}</span>
+                {!swap ? (
+                  <span
+                    className={`balance ${targetError ? "error" : ""}`}
+                  >{`Balance: ${this.retrievePocketBalance(
+                    targetPocket,
+                    targetValue
+                  )}`}</span>
+                ) : (
+                  <span
+                    className={`balance ${sourceError ? "error" : ""}`}
+                  >{`Balance: ${this.retrievePocketBalance(
+                    sourcePocket,
+                    sourceValue
+                  )}`}</span>
+                )}
               </div>
               <input
                 type="number"
                 placeholder="0.00"
-                onChange={this.targetInputChange}
-                value={targetAmount}
+                onChange={
+                  !swap ? this.targetInputChange : this.sourceInputChange
+                }
+                value={!swap ? targetAmount : sourceAmount}
               />
             </div>
             <Button

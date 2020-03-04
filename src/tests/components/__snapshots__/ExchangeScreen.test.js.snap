@@ -48,7 +48,6 @@ exports[`ExchangeScreen Component should render ExchangeScreen component correct
         <input
           onChange={[Function]}
           placeholder="0.00"
-          required={true}
           type="number"
           value=""
         />
@@ -59,7 +58,9 @@ exports[`ExchangeScreen Component should render ExchangeScreen component correct
         <div
           className="inner-section"
         >
-          <ExchangeButton />
+          <ExchangeButton
+            swapPocketCurrencies={[Function]}
+          />
           <div
             className="exchange-rate"
           >
@@ -110,7 +111,6 @@ exports[`ExchangeScreen Component should render ExchangeScreen component correct
         <input
           onChange={[Function]}
           placeholder="0.00"
-          required={true}
           type="number"
           value=""
         />

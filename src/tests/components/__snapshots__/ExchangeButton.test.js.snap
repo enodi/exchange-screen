@@ -3,6 +3,7 @@
 exports[`ExchangeButton Component should render ExchangeButton component correctly 1`] = `
 <button
   id="exchange-button"
+  onClick={[MockFunction]}
 >
   <svg
     height="35px"
