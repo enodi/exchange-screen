@@ -1,5 +1,4 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Card from "./Card";
@@ -187,14 +186,14 @@ export class ExchangeScreen extends React.Component {
     let targetArr = [];
 
     if (exchange) {
-      sourcePocket.pocket.map(item => {
+      sourcePocket.pocket.forEach(item => {
         if (item.currency === sourcePocket.value) {
           item.balance = item.balance - sourcePocket.amount;
         }
         sourceArr.push(item);
         sourcePocket.pocket = sourceArr;
       });
-      targetPocket.pocket.map(item => {
+      targetPocket.pocket.forEach(item => {
         if (item.currency === targetPocket.value) {
           item.balance = item.balance + targetPocket.amount;
         }
@@ -208,14 +207,14 @@ export class ExchangeScreen extends React.Component {
       this.setState({ target: targetPocket });
       this.setState(() => ({ disabled: true }));
     } else {
-      sourcePocket.pocket.map(item => {
+      sourcePocket.pocket.forEach(item => {
         if (item.currency === sourcePocket.value) {
           item.balance = item.balance + sourcePocket.amount;
         }
         sourceArr.push(item);
         sourcePocket.pocket = sourceArr;
       });
-      targetPocket.pocket.map(item => {
+      targetPocket.pocket.forEach(item => {
         if (item.currency === targetPocket.value) {
           item.balance = item.balance - targetPocket.amount;
         }
@@ -327,9 +326,6 @@ export class ExchangeScreen extends React.Component {
                       : "0"}
                   </span>
                 </div>
-                <NavLink to="/target">
-                  <Button text="Set target" color="blue" size="medium" />
-                </NavLink>
               </div>
             </div>
             <div className="bottom-section">

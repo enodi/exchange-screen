@@ -7,7 +7,6 @@ import Header from "components/Header";
 export const history = createBrowserHistory();
 
 const ExchangePage = lazy(() => import("pages/ExchangePage"));
-const TargetPage = lazy(() => import("pages/TargetPage"));
 
 const AppRoute = () => (
   <Router history={history}>
@@ -16,7 +15,6 @@ const AppRoute = () => (
         <Header />
         <Switch>
           <Route exact path="/" component={ExchangePage} />
-          <Route exact path="/target" component={TargetPage} />
         </Switch>
       </>
     </Suspense>

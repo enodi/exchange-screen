@@ -1,7 +1,7 @@
 import React from "react";
 
-const ExchangeButton = () => (
-  <button id="exchange-button">
+const ExchangeButton = ({ swapPocketCurrencies }) => (
+  <button id="exchange-button" onClick={swapPocketCurrencies}>
     <svg x="0px" y="0px" viewBox="0 0 470.72 470.72" width="35px" height="35px">
       <g>
         <g>
