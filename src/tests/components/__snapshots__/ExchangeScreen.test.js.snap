@@ -71,15 +71,6 @@ exports[`ExchangeScreen Component should render ExchangeScreen component correct
               €1.1493
             </span>
           </div>
-          <NavLink
-            to="/target"
-          >
-            <Button
-              color="blue"
-              size="medium"
-              text="Set target"
-            />
-          </NavLink>
         </div>
       </div>
       <div

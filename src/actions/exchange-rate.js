@@ -1,7 +1,7 @@
 import { Api as api } from "helpers/utils";
 
 export const exchangeRate = data => ({
-  type: "LIST_RATE",
+  type: "EXCHANGE_RATE",
   payload: data
 });
 
@@ -22,6 +22,11 @@ export const fetchExchangeRate = ({ source, target }) => {
           })
         )
       )
-      .catch(error => console.log(error));
+      .catch(error =>
+        dispatch({
+          type: "EXCHANGE_ERROR",
+          payload: error
+        })
+      );
   };
 };
