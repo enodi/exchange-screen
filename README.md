@@ -1,4 +1,4 @@
-# Revolut
+# Revolut Frontend Challenge
 
 By [Enodi Audu](https://github.com/enodi)
 
@@ -8,7 +8,7 @@ By [Enodi Audu](https://github.com/enodi)
 - Clone this repo to your directory
   - Using HTTP; `$ git clone https://github.com/enodi/exchange-screen.git`
 - Navigate to the root directory e.g `$ cd exchange-screen`
-- Create a `.env` file in the root directory. See an example of the content of `.env` file in `.env.txt`
+- Create a `.env.development.local` file in the root directory. See an example of the content of `.env` file in `.env.txt`
 - Run `yarn install` to install project dependencies
 - Start the application using: `yarn start`
 - Navigate to app in [browser](http://localhost:3000)
