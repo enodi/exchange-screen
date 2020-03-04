@@ -11,6 +11,7 @@ export class ExchangeScreen extends React.Component {
   state = {
     disabled: true,
     exchange: false,
+
     source: {
       value: "GBP",
       amount: "",
@@ -301,7 +302,6 @@ export class ExchangeScreen extends React.Component {
               <input
                 type="number"
                 placeholder="0.00"
-                required
                 onChange={this.sourceInputChange}
                 value={sourceAmount}
               />
@@ -359,7 +359,6 @@ export class ExchangeScreen extends React.Component {
               <input
                 type="number"
                 placeholder="0.00"
-                required
                 onChange={this.targetInputChange}
                 value={targetAmount}
               />
