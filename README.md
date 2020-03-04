@@ -21,7 +21,7 @@ I used create-react-app to generate the scaffolding for this app.
 
 #### Build an application that allow users get latest rates for USD, GBP and EUR, the application should have atleast 3 currencies in it's pocket that allow users exchange between pockets.
 
-I used a card component to display the exchange screen. The card contains 4 currencies: USD, GBP, JPY and EUR which are displayed in each pocket. Users can exchange between pockets and view active pocket balance. I also added a set target functionality that allow users set targets
+I used a card component to display the exchange screen. The card contains 4 currencies: USD, GBP, JPY and EUR which are displayed in each pocket. Users can exchange between pockets and view active pocket balance.
 
 ### Bonuses
 
