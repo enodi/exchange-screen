@@ -1,5 +1,3 @@
-# Revolut Frontend Challenge
-
 By [Enodi Audu](https://github.com/enodi)
 
 ### Instructions
